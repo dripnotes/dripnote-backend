@@ -1,7 +1,7 @@
 package dripnote.bean.repository;
 
-import dripnote.bean.entity.RoasterEntity;
+import dripnote.bean.domain.Roaster;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RoastersRepository extends JpaRepository<RoasterEntity, Long> {
+public interface RoastersRepository extends JpaRepository<Roaster, Long> {
 }

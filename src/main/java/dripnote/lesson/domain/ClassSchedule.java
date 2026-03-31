@@ -1,4 +1,4 @@
-package dripnote.lesson.entity;
+package dripnote.lesson.domain;
 
 import dripnote.lesson.enums.ScheduleStatus;
 import jakarta.persistence.*;
@@ -17,7 +17,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "class_schedules")
-public class ClassScheduleEntity {
+public class ClassSchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class ClassScheduleEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id", nullable = false)
-    private ClassEntity classEntity;
+    private Class aClass;
 
     @Column(name = "class_date", nullable = false)
     private LocalDate classDate;

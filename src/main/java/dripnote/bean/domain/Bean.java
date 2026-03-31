@@ -1,4 +1,4 @@
-package dripnote.bean.entity;
+package dripnote.bean.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "beans")
-public class BeanEntity {
+public class Bean {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class BeanEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roaster_id", nullable = false)
-    private RoasterEntity roaster;
+    private Roaster roaster;
 
     @Column(name = "name_ko", nullable = false, length = 150)
     private String nameKo;

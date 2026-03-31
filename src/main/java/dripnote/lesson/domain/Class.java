@@ -1,7 +1,7 @@
-package dripnote.lesson.entity;
+package dripnote.lesson.domain;
 
 import dripnote.lesson.enums.DifficultyLevel;
-import dripnote.user.entity.UserEntity;
+import dripnote.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "classes")
-public class ClassEntity {
+public class Class {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class ClassEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "host_user_id", nullable = false)
-    private UserEntity hostUser;
+    private User hostUser;
 
     @Column(name = "title", nullable = false, length = 200)
     private String title;

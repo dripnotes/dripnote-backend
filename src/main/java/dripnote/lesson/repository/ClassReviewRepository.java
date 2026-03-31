@@ -1,7 +1,7 @@
 package dripnote.lesson.repository;
 
-import dripnote.lesson.entity.ClassReviewEntity;
+import dripnote.lesson.domain.ClassReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClassReviewRepository extends JpaRepository<ClassReviewEntity, Long> {
+public interface ClassReviewRepository extends JpaRepository<ClassReview, Long> {
 }

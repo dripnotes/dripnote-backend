@@ -1,4 +1,4 @@
-package dripnote.lesson.entity;
+package dripnote.lesson.domain;
 
 import dripnote.lesson.enums.PaymentProvider;
 import dripnote.lesson.enums.PaymentStatus;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "payments")
-public class PaymentEntity {
+public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class PaymentEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id", nullable = false)
-    private BookingEntity booking;
+    private Booking booking;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "provider", nullable = false, length = 20)

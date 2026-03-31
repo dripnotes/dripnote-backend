@@ -10,9 +10,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     /* [삭제된 부분]
-       - .formLogin(...): 이제 아이디/비밀번호 로그인을 쓰지 않으므로 삭제합니다.
-       - .rememberMe(...): 이 기능은 UserDetailsService가 필요하여 에러를 일으켰으므로 삭제합니다.
-       - /signup: OAuth2 전용이므로 별도의 회원가입 페이지는 필요 없어 제외했습니다.
+       - .invalidateHttpSession(true): 디폴트값이 true라 불필요할 것 같아서 삭제합니다.
+       - .logoutUrl("/logout"): 디폴트값이 "/logout"이라 불필요할 것 같아서 삭제합니다.
+       - requestMatchers 내부에 "/main" 삭제, 메인페이지는 "/"으로 사용
+       [추가된 부분]
+       - requestMatchers 내부에 "/oauth2/**" 추가, 추후에 oauth 요청 시 사용
+       [변경된 부분]
+       - .logoutSuccessUrl("/main") -> .logoutSuccessUrl("/")
+       - .defaultSuccessUrl("/main", true) -> .defaultSuccessUrl("/", true)
     */
 
     @Bean
@@ -26,14 +31,13 @@ public class SecurityConfig {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(
                                 "/",
-                                "/main",
-                                "/signin",  // 로그인 페이지
+                                "/signin",
                                 "/beans/**",
-                                "/classes/**"
+                                "/classes/**",
+                                "/oauth2/**"
                         ).permitAll()
                         .requestMatchers(
-                                "/mypage/**",
-                                "/reservations/**"
+                                "/mypage/**"
                         ).authenticated()
                         .anyRequest().authenticated() // 나머지는 로그인한 유저만
                 )
@@ -41,14 +45,12 @@ public class SecurityConfig {
                 // OAuth2 로그인 설정
                 .oauth2Login(oauth -> oauth
                         .loginPage("/signin") // 커스텀 로그인 페이지 사용 시
-                        .defaultSuccessUrl("/main", true) // 로그인 성공 시 이동할 곳
+                        .defaultSuccessUrl("/", true) // 로그인 성공 시 이동할 곳
                 )
 
                 // 로그아웃 설정
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/main")
-                        .invalidateHttpSession(true)
+                        .logoutSuccessUrl("/")
                         .deleteCookies("JSESSIONID")
                 );
         return http.build();

@@ -1,7 +1,7 @@
 package dripnote.bean.repository;
 
-import dripnote.bean.entity.BeanTastingNoteEntity;
+import dripnote.bean.domain.BeanTastingNote;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BeanTastingNotesRepository extends JpaRepository<BeanTastingNoteEntity, Long> {
+public interface BeanTastingNotesRepository extends JpaRepository<BeanTastingNote, Long> {
 }

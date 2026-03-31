@@ -1,7 +1,7 @@
 package dripnote.lesson.repository;
 
-import dripnote.lesson.entity.BookingEntity;
+import dripnote.lesson.domain.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
+public interface BookingRepository extends JpaRepository<Booking, Long> {
 }

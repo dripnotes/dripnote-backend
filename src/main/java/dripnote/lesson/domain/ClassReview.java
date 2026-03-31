@@ -1,6 +1,5 @@
-package dripnote.bean.entity;
+package dripnote.lesson.domain;
 
-import dripnote.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,21 +13,17 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "bean_reviews")
-public class BeanReviewEntity {
+@Table(name = "class_reviews")
+public class ClassReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bean_review_id")
-    private Long beanReviewId;
+    @Column(name = "class_review_id")
+    private Long classReviewId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bean_id", nullable = false)
-    private BeanEntity bean;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booking_id", nullable = false)
+    private Booking booking;
 
     @Column(name = "rating", nullable = false)
     private Integer rating;

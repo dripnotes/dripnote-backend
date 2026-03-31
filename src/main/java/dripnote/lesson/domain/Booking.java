@@ -1,7 +1,7 @@
-package dripnote.lesson.entity;
+package dripnote.lesson.domain;
 
 import dripnote.lesson.enums.BookingStatus;
-import dripnote.user.entity.UserEntity;
+import dripnote.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "bookings")
-public class BookingEntity {
+public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +25,11 @@ public class BookingEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_schedule_id", nullable = false)
-    private ClassScheduleEntity classSchedule;
+    private ClassSchedule classSchedule;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "booking_status", nullable = false, length = 20)
