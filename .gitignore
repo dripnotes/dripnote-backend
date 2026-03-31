@@ -5,11 +5,12 @@ application.yml
 
 .gradle
 build/
-!gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/*
 !**/src/main/**/build/
 !**/src/test/**/build/
 
 ### STS ###
+.metadata/
 .apt_generated
 .classpath
 .factorypath

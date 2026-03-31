@@ -1,5 +1,6 @@
 package dripnote.user.entity;
 
+import dripnote.user.enums.UserProvider;
 import dripnote.user.enums.UserRole;
 import dripnote.user.enums.UserStatus;
 import jakarta.persistence.*;
@@ -40,7 +41,7 @@ public class UserEntity {
 
     // 해당 플랫폼에서 제공하는 고유 식별 번호 (sub, id 등)
     @Column(name = "provider_id", nullable = false, length = 255)
-    private String providerId;
+    private UserProvider providerId;
 
     @Column(name = "nickname", nullable = false, length = 50)
     private String nickname;
