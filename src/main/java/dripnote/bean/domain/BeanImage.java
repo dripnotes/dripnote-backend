@@ -1,6 +1,5 @@
-package dripnote.bean.entity;
+package dripnote.bean.domain;
 
-import dripnote.bean.enums.NoteType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,27 +12,23 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "bean_tasting_notes")
-public class BeanTastingNoteEntity {
+@Table(name = "bean_images")
+public class BeanImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bean_tasting_note_id")
-    private Long beanTastingNoteId;
+    @Column(name = "bean_image_id")
+    private Long beanImageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bean_id", nullable = false)
-    private BeanEntity bean;
+    private Bean bean;
 
-    @Column(name = "note_name", nullable = false, length = 50)
-    private String noteName;
+    @Column(name = "image_url", nullable = false, length = 500)
+    private String imageUrl;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "note_type", nullable = false, length = 10)
-    private NoteType noteType = NoteType.SUB;
-
-    @Column(name = "intensity")
-    private Integer intensity;
+    @Column(name = "image_type", length = 20)
+    private String imageType;
 
     @Column(name = "sort_order", nullable = false)
     private Integer sortOrder = 1;

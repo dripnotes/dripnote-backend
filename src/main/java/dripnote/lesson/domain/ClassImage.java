@@ -1,4 +1,4 @@
-package dripnote.lesson.entity;
+package dripnote.lesson.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "class_images")
-public class ClassImageEntity {
+public class ClassImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class ClassImageEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id", nullable = false)
-    private ClassEntity classEntity;
+    private Class aClass;
 
     @Column(name = "image_url", nullable = false, length = 500)
     private String imageUrl;

@@ -1,7 +1,7 @@
 package dripnote.lesson.repository;
 
-import dripnote.lesson.entity.ClassEntity;
+import dripnote.lesson.domain.Class;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
+public interface ClassRepository extends JpaRepository<Class, Long> {
 }

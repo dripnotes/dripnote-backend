@@ -1,6 +1,6 @@
-package dripnote.bean.entity;
+package dripnote.bean.domain;
 
-import dripnote.user.entity.UserEntity;
+import dripnote.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "bean_bookmarks")
-public class BeanBookmarkEntity {
+public class BeanBookmark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +23,11 @@ public class BeanBookmarkEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bean_id", nullable = false)
-    private BeanEntity bean;
+    private Bean bean;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

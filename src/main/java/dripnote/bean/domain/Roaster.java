@@ -1,4 +1,4 @@
-package dripnote.bean.entity;
+package dripnote.bean.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,7 +14,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "roasters")
-public class RoasterEntity {
+public class Roaster {
+    /**
+     * city, country, updatedAt -> 해당 데이터는 현재 불필요할 것 같아서 삭제했습니다!
+     */
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +30,6 @@ public class RoasterEntity {
     @Column(name = "name_en", length = 100)
     private String nameEn;
 
-    @Column(name = "city", length = 100)
-    private String city;
-
-    @Column(name = "country", length = 100)
-    private String country;
-
     @Column(name = "homepage_url", length = 500)
     private String homepageUrl;
 
@@ -42,8 +39,4 @@ public class RoasterEntity {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 }
