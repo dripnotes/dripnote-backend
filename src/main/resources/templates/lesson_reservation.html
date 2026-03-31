@@ -1,0 +1,468 @@
+<!doctype html>
+<html class="light" lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Dripnote | 클래스 예약</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#371f17" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@300;400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            secondary: "#75584d",
+            "on-secondary-fixed-variant": "#5b4137",
+            "primary-fixed-dim": "#e7bdb1",
+            "on-primary-fixed": "#2c160e",
+            surface: "#f9f9f8",
+            "on-primary": "#ffffff",
+            "surface-container": "#eeeeed",
+            "on-secondary-container": "#795c51",
+            "on-secondary-fixed": "#2b160f",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-container": "#443833",
+            primary: "#371f17",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f4f4f3",
+            "primary-fixed": "#ffdbd0",
+            "on-error-container": "#93000a",
+            "on-surface": "#1a1c1c",
+            "tertiary-fixed": "#f2ded8",
+            "outline-variant": "#d4c3bf",
+            "on-tertiary-container": "#b3a19b",
+            "on-error": "#ffffff",
+            "tertiary-fixed-dim": "#d6c3bc",
+            "on-tertiary-fixed": "#231915",
+            "surface-tint": "#77574d",
+            "on-tertiary": "#ffffff",
+            "surface-container-highest": "#e2e2e2",
+            "on-surface-variant": "#504442",
+            "inverse-surface": "#2f3130",
+            tertiary: "#2e231f",
+            "secondary-container": "#fed7ca",
+            "on-background": "#1a1c1c",
+            error: "#ba1a1a",
+            "primary-container": "#4f342b",
+            "on-primary-container": "#c29c90",
+            "surface-dim": "#dadad9",
+            "surface-container-high": "#e8e8e7",
+            outline: "#827471",
+            "error-container": "#ffdad6",
+            background: "#f9f9f8",
+            "on-tertiary-fixed-variant": "#51443f",
+            "inverse-primary": "#e7bdb1",
+            "on-primary-fixed-variant": "#5d4037",
+            "surface-variant": "#e2e2e2",
+            "surface-bright": "#f9f9f8",
+            "secondary-fixed-dim": "#e4beb2",
+            "secondary-fixed": "#ffdbce",
+            "inverse-on-surface": "#f1f1f0",
+          },
+          fontFamily: {
+            headline: ["Manrope"],
+            body: ["Be Vietnam Pro"],
+            label: ["Be Vietnam Pro"],
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings:
+        "FILL" 0,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 24;
+      vertical-align: middle;
+    }
+
+    body {
+      font-family: "Be Vietnam Pro", sans-serif;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: "Manrope", sans-serif;
+    }
+  </style>
+</head>
+  <body
+    class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+    <!-- Header -->
+    <header
+      class="sticky top-0 z-50 w-full border-b border-outline-variant/20 bg-surface/90 backdrop-blur-md">
+      <div
+        class="mx-auto flex max-w-3xl items-center justify-between px-5 py-4">
+        <button
+          class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-surface-container active:scale-95 transition"
+          onclick="history.back()">
+          <span class="material-symbols-outlined text-primary">arrow_back</span>
+        </button>
+
+        <div class="text-center">
+          <p
+            class="font-label text-[11px] font-bold uppercase tracking-[0.18em] text-on-surface-variant">
+            Class Booking
+          </p>
+          <h1
+            class="font-headline text-lg font-extrabold tracking-tight text-primary">
+            클래스 예약하기
+          </h1>
+        </div>
+
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container-low text-primary">
+          <span class="material-symbols-outlined text-[20px]">coffee</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-xl mx-auto px-6 pt-8 pb-[220px] space-y-10">
+      <!-- Progress -->
+      <section
+        class="rounded-2xl bg-surface-container-low p-5 shadow-[0_8px_24px_rgba(55,31,23,0.04)]">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="font-headline text-base font-bold text-primary">
+            예약 진행 단계
+          </h2>
+          <span class="text-sm font-medium text-on-surface-variant">1 / 3</span>
+        </div>
+
+        <div class="relative grid grid-cols-3 gap-4">
+          <div
+            class="absolute left-[16.66%] right-[16.66%] top-4 h-[2px] bg-surface-container-high"></div>
+
+          <div class="relative flex flex-col items-center gap-2">
+            <div
+              class="z-10 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-on-primary">
+              1
+            </div>
+            <span class="text-xs font-bold text-primary">예약 확인</span>
+          </div>
+
+          <div class="relative flex flex-col items-center gap-2">
+            <div
+              class="z-10 flex h-8 w-8 items-center justify-center rounded-full bg-surface-container-high text-sm font-bold text-on-surface-variant">
+              2
+            </div>
+            <span class="text-xs font-bold text-on-surface-variant"
+              >정보 입력</span
+            >
+          </div>
+
+          <div class="relative flex flex-col items-center gap-2">
+            <div
+              class="z-10 flex h-8 w-8 items-center justify-center rounded-full bg-surface-container-high text-sm font-bold text-on-surface-variant">
+              3
+            </div>
+            <span class="text-xs font-bold text-on-surface-variant">결제</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Class Summary -->
+      <section
+        class="overflow-hidden rounded-2xl bg-surface-container-lowest shadow-[0_8px_24px_rgba(55,31,23,0.05)]">
+        <div class="grid md:grid-cols-[220px_1fr]">
+          <div class="h-52 md:h-full">
+            <img
+              alt="Coffee Class"
+              class="h-full w-full object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR3vajQvN6AgpOFxFUpA2QRo5tim7dQjOBLVeoP96S0QhYlj4Zr4kI4_OviW9E92Z2HW3HYKDcTFTy-3zudcCIlmpJHym9Wtrqx6g1nhAaFxvWRT5pWZLY7ohYQ-vV0pmtSl7XvCDvbhv8FBr3xDoL4UE_T_ZLPgNCwHLO3r-onkB24NqP1zAmrQJfB7mEqNK-qXHQkX0MHUadhlzwW86bZCNjlZ9W89CfxDZyeNLPb5wlKZRtgoxrCiAzp_APyxjIKIJlaKTphpty" />
+          </div>
+
+          <div class="p-6 space-y-5">
+            <div class="flex items-start justify-between gap-4">
+              <div class="space-y-2">
+                <span
+                  class="inline-flex rounded-full bg-secondary-container px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-on-secondary-container">
+                  Advanced Workshop
+                </span>
+                <h2
+                  class="font-headline text-xl font-extrabold tracking-tight text-primary">
+                  브루잉의 미학: 핸드드립 심화 과정
+                </h2>
+                <p class="text-sm leading-relaxed text-on-surface-variant">
+                  추출 변수의 이해부터 맛의 밸런스를 조절하는 실전 드립까지, 한
+                  단계 깊어진 브루잉 경험을 위한 클래스입니다.
+                </p>
+              </div>
+
+              <div class="hidden md:block text-right">
+                <p class="text-xs font-medium text-on-surface-variant">
+                  참가비
+                </p>
+                <p class="text-xl font-black text-primary">45,000원</p>
+              </div>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div class="rounded-xl bg-surface-container-low p-4">
+                <div class="mb-2 flex items-center gap-2 text-secondary">
+                  <span class="material-symbols-outlined text-[18px]"
+                    >calendar_today</span
+                  >
+                  <span class="text-xs font-bold uppercase tracking-wider"
+                    >일정</span
+                  >
+                </div>
+                <p class="font-bold text-primary">2024.05.24 (금)</p>
+                <p class="text-sm text-on-surface-variant">오후 2:30 ~ 4:00</p>
+              </div>
+
+              <div class="rounded-xl bg-surface-container-low p-4">
+                <div class="mb-2 flex items-center gap-2 text-secondary">
+                  <span class="material-symbols-outlined text-[18px]"
+                    >location_on</span
+                  >
+                  <span class="text-xs font-bold uppercase tracking-wider"
+                    >장소</span
+                  >
+                </div>
+                <p class="font-bold text-primary">Seoul Drip Studio</p>
+                <p class="text-sm text-on-surface-variant">
+                  서울 성동구 성수이로 00길 00
+                </p>
+              </div>
+            </div>
+
+            <div class="md:hidden rounded-xl bg-primary-fixed/40 px-4 py-3">
+              <p class="text-xs text-on-surface-variant">참가비</p>
+              <p class="text-lg font-black text-primary">45,000원</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Attendee Info -->
+      <section
+        class="rounded-2xl bg-surface-container-lowest p-6 shadow-[0_8px_24px_rgba(55,31,23,0.05)] space-y-5">
+        <div class="space-y-1">
+          <p
+            class="font-label text-[11px] font-bold uppercase tracking-[0.16em] text-secondary">
+            Step 2
+          </p>
+          <h2 class="font-headline text-lg font-bold text-primary">
+            예약자 정보 입력
+          </h2>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="space-y-2">
+            <label
+              class="ml-1 text-xs font-bold tracking-wider text-on-surface-variant">
+              이름
+            </label>
+            <input
+              type="text"
+              placeholder="성함을 입력하세요"
+              class="w-full rounded-xl border-none bg-surface-container-low px-4 py-3.5 placeholder:text-outline focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary transition" />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="ml-1 text-xs font-bold tracking-wider text-on-surface-variant">
+              연락처
+            </label>
+            <input
+              type="tel"
+              placeholder="010-0000-0000"
+              class="w-full rounded-xl border-none bg-surface-container-low px-4 py-3.5 placeholder:text-outline focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary transition" />
+          </div>
+
+          <div class="space-y-2 md:col-span-2">
+            <label
+              class="ml-1 text-xs font-bold tracking-wider text-on-surface-variant">
+              요청사항
+            </label>
+            <textarea
+              rows="4"
+              placeholder="알레르기, 문의사항, 요청사항이 있다면 입력해주세요."
+              class="w-full rounded-xl border-none bg-surface-container-low px-4 py-3.5 placeholder:text-outline focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary transition resize-none"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Policy -->
+      <section
+        class="rounded-2xl bg-surface-container-lowest p-6 shadow-[0_8px_24px_rgba(55,31,23,0.05)] space-y-5">
+        <div class="space-y-1">
+          <p
+            class="font-label text-[11px] font-bold uppercase tracking-[0.16em] text-secondary">
+            Agreement
+          </p>
+          <h2 class="font-headline text-lg font-bold text-primary">
+            약관 동의
+          </h2>
+        </div>
+
+        <div class="rounded-xl bg-surface-container-low p-4 space-y-3">
+          <label class="flex cursor-pointer items-start gap-3">
+            <div class="relative mt-0.5 flex items-center">
+              <input
+                type="checkbox"
+                class="peer h-5 w-5 appearance-none rounded-md bg-white border border-outline-variant checked:border-primary checked:bg-primary" />
+              <span
+                class="material-symbols-outlined pointer-events-none absolute left-0.5 top-0.5 text-[16px] text-white opacity-0 peer-checked:opacity-100">
+                check
+              </span>
+            </div>
+            <div>
+              <p class="font-medium text-primary">
+                개인정보 수집 및 이용 동의
+                <span class="text-error">(필수)</span>
+              </p>
+              <p class="text-sm text-on-surface-variant">
+                예약 확인, 안내 문자 발송, 클래스 운영을 위한 최소한의 정보를
+                수집합니다.
+              </p>
+            </div>
+          </label>
+
+          <div class="h-px bg-outline-variant/30"></div>
+
+          <label class="flex cursor-pointer items-start gap-3">
+            <div class="relative mt-0.5 flex items-center">
+              <input
+                type="checkbox"
+                class="peer h-5 w-5 appearance-none rounded-md bg-white border border-outline-variant checked:border-primary checked:bg-primary" />
+              <span
+                class="material-symbols-outlined pointer-events-none absolute left-0.5 top-0.5 text-[16px] text-white opacity-0 peer-checked:opacity-100">
+                check
+              </span>
+            </div>
+            <div>
+              <p class="font-medium text-primary">
+                취소 및 환불 규정 확인 <span class="text-error">(필수)</span>
+              </p>
+              <p class="text-sm text-on-surface-variant">
+                클래스 시작 3일 전까지 전액 환불, 이후에는 환불 규정이 제한될 수
+                있습니다.
+              </p>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- Payment -->
+      <section
+        class="rounded-2xl bg-surface-container-lowest p-6 shadow-[0_8px_24px_rgba(55,31,23,0.05)] space-y-5">
+        <div class="space-y-1">
+          <p
+            class="font-label text-[11px] font-bold uppercase tracking-[0.16em] text-secondary">
+            Step 3
+          </p>
+          <h2 class="font-headline text-lg font-bold text-primary">
+            결제 방법 선택
+          </h2>
+        </div>
+
+        <div class="space-y-3">
+          <button
+            class="group flex w-full items-center justify-between rounded-xl border border-primary bg-primary-fixed/35 p-4 text-left transition hover:bg-primary-fixed/50 active:scale-[0.99]">
+            <div class="flex items-center gap-4">
+              <div
+                class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#FAE100] text-xs font-black text-[#191919]">
+                카카오
+              </div>
+              <div>
+                <p class="font-bold text-primary">카카오페이</p>
+                <p class="text-sm text-on-surface-variant">
+                  간편하게 바로 결제
+                </p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-primary"
+              >radio_button_checked</span
+            >
+          </button>
+
+          <button
+            class="group flex w-full items-center justify-between rounded-xl border border-transparent bg-surface-container-low p-4 text-left transition hover:border-outline-variant/40 hover:bg-surface-container active:scale-[0.99]">
+            <div class="flex items-center gap-4">
+              <div
+                class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#0064FF]">
+                <span class="text-lg font-black italic text-white">T</span>
+              </div>
+              <div>
+                <p class="font-bold text-primary">토스페이</p>
+                <p class="text-sm text-on-surface-variant">빠른 간편 결제</p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-outline"
+              >radio_button_unchecked</span
+            >
+          </button>
+
+          <button
+            class="group flex w-full items-center justify-between rounded-xl border border-transparent bg-surface-container-low p-4 text-left transition hover:border-outline-variant/40 hover:bg-surface-container active:scale-[0.99]">
+            <div class="flex items-center gap-4">
+              <div
+                class="flex h-11 w-11 items-center justify-center rounded-xl bg-surface-container-high">
+                <span class="material-symbols-outlined text-primary"
+                  >credit_card</span
+                >
+              </div>
+              <div>
+                <p class="font-bold text-primary">신용 / 체크카드</p>
+                <p class="text-sm text-on-surface-variant">일반 카드 결제</p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-outline"
+              >radio_button_unchecked</span
+            >
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Sticky Bottom CTA -->
+    <div
+      class="fixed bottom-0 left-0 z-50 w-full border-t border-outline-variant/20 bg-surface/92 backdrop-blur-xl">
+      <div class="mx-auto max-w-3xl px-5 pt-4 pb-6">
+        <div
+          class="mb-4 flex flex-col gap-2 rounded-2xl bg-surface-container-low px-4 py-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-sm font-medium text-on-surface-variant">
+              총 결제 금액
+            </p>
+            <p class="text-xs text-on-surface-variant">
+              브루잉의 미학: 핸드드립 심화 과정 1인
+            </p>
+          </div>
+          <div class="flex items-end gap-1">
+            <span class="text-2xl font-black text-primary">45,000</span>
+            <span class="pb-0.5 text-sm font-bold text-primary">원</span>
+          </div>
+        </div>
+
+        <button
+          class="w-full rounded-xl bg-gradient-to-br from-primary to-primary-container py-4 text-lg font-bold text-on-primary shadow-[0_8px_24px_rgba(55,31,23,0.15)] transition active:scale-[0.98]">
+          신청하기
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

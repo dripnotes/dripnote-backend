@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: Dripnote
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/dripnote?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false
+    username: ssafy
+    password: ssafy
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080

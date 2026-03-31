@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Be+Vietnam+Pro:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#77574d",
+              "on-surface-variant": "#504442",
+              "primary-fixed-dim": "#e7bdb1",
+              "on-tertiary-container": "#b3a19b",
+              "secondary": "#75584d",
+              "on-tertiary-fixed": "#231915",
+              "on-secondary": "#ffffff",
+              "outline": "#827471",
+              "on-error-container": "#93000a",
+              "surface-container-highest": "#e2e2e2",
+              "surface-container-low": "#f4f4f3",
+              "surface-container": "#eeeeed",
+              "tertiary-fixed": "#f2ded8",
+              "secondary-fixed": "#ffdbce",
+              "tertiary": "#2e231f",
+              "primary": "#371f17",
+              "on-secondary-container": "#795c51",
+              "inverse-surface": "#2f3130",
+              "primary-fixed": "#ffdbd0",
+              "on-background": "#1a1c1c",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#443833",
+              "on-primary-container": "#c29c90",
+              "on-primary": "#ffffff",
+              "surface-bright": "#f9f9f8",
+              "surface": "#f9f9f8",
+              "on-secondary-fixed": "#2b160f",
+              "primary-container": "#4f342b",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-high": "#e8e8e7",
+              "tertiary-fixed-dim": "#d6c3bc",
+              "secondary-fixed-dim": "#e4beb2",
+              "surface-dim": "#dadad9",
+              "secondary-container": "#fed7ca",
+              "on-primary-fixed": "#2c160e",
+              "inverse-primary": "#e7bdb1",
+              "error-container": "#ffdad6",
+              "on-secondary-fixed-variant": "#5b4137",
+              "on-primary-fixed-variant": "#5d4037",
+              "on-tertiary-fixed-variant": "#51443f",
+              "inverse-on-surface": "#f1f1f0",
+              "on-error": "#ffffff",
+              "error": "#ba1a1a",
+              "outline-variant": "#d4c3bf",
+              "on-surface": "#1a1c1c",
+              "surface-variant": "#e2e2e2",
+              "background": "#f9f9f8"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Be Vietnam Pro"],
+              "label": ["Be Vietnam Pro"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        vertical-align: middle;
+      }
+      .no-border-tonal-layering {
+        border: none !important;
+      }
+      body {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        background-color: #f9f9f8;
+        color: #1a1c1c;
+      }
+      h1, h2, h3 {
+        font-family: 'Manrope', sans-serif;
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#f9f9f8]/85 backdrop-blur-md shadow-[0_8px_24px_rgba(55,31,23,0.06)] no-border-tonal-layering">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+<!-- Brand Logo -->
+<div class="text-2xl font-bold text-[#371f17] tracking-tighter font-['Manrope']">Dripnote</div>
+<!-- Navigation Links -->
+<div class="hidden md:flex gap-10 items-center">
+<a class="text-[#795c51] hover:text-[#371f17] transition-colors font-['Manrope'] font-semibold tracking-tight" href="#">Home</a>
+<a class="text-[#795c51] hover:text-[#371f17] transition-colors font-['Manrope'] font-semibold tracking-tight" href="#">Bean Info</a>
+<a class="text-[#795c51] hover:text-[#371f17] transition-colors font-['Manrope'] font-semibold tracking-tight" href="#">Classes</a>
+</div>
+<!-- Trailing Icon Actions -->
+<div class="flex items-center gap-6">
+<button class="text-[#371f17] font-bold border-b-2 border-[#371f17] pb-1 flex items-center transition-all Active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="bookmarks" style="font-variation-settings: 'FILL' 1;">bookmarks</span>
+</button>
+<button class="text-[#795c51] hover:text-[#371f17] transition-all Active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-24 max-w-7xl mx-auto px-8">
+<!-- Page Hero -->
+<section class="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
+<div class="space-y-4">
+<h1 class="text-5xl font-extrabold text-primary tracking-tight">북마크</h1>
+<p class="text-lg text-on-surface-variant font-medium max-w-xl">취향에 맞아 저장해둔 원두와 클래스를 한곳에서 확인해보세요</p>
+<div class="flex items-center gap-2 pt-2">
+<span class="text-sm font-bold px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full">저장한 항목 12개</span>
+</div>
+</div>
+<div>
+<button class="px-8 py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="settings">settings</span>
+                    북마크 관리
+                </button>
+</div>
+</section>
+<!-- Tab Navigation & Filters -->
+<div class="flex flex-col gap-8 mb-12">
+<!-- Tabs -->
+<div class="flex gap-8 border-b border-outline-variant/20 pb-0">
+<button class="pb-4 text-primary font-bold border-b-2 border-primary transition-colors">전체</button>
+<button class="pb-4 text-on-surface-variant hover:text-primary font-medium transition-colors">원두</button>
+<button class="pb-4 text-on-surface-variant hover:text-primary font-medium transition-colors">클래스</button>
+</div>
+<!-- Filter Chips & Sort -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div class="flex flex-wrap gap-2">
+<button class="px-5 py-2 bg-surface-container-low text-on-surface-variant rounded-full text-sm font-semibold hover:bg-surface-container-high transition-colors">플로럴</button>
+<button class="px-5 py-2 bg-surface-container-low text-on-surface-variant rounded-full text-sm font-semibold hover:bg-surface-container-high transition-colors">과일향</button>
+<button class="px-5 py-2 bg-surface-container-low text-on-surface-variant rounded-full text-sm font-semibold hover:bg-surface-container-high transition-colors">초콜릿</button>
+<button class="px-5 py-2 bg-surface-container-low text-on-surface-variant rounded-full text-sm font-semibold hover:bg-surface-container-high transition-colors">라이트 로스트</button>
+<button class="px-3 py-2 text-primary font-bold text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-base" data-icon="tune">tune</span>
+                        필터
+                    </button>
+</div>
+<div class="flex items-center gap-2 text-sm font-bold text-on-surface-variant">
+                    최신 저장순
+                    <span class="material-symbols-outlined text-base" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Main Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Bean Card 1 -->
+<article class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_16px_rgba(55,31,23,0.04)] hover:shadow-[0_8px_24px_rgba(55,31,23,0.08)] transition-all flex flex-col">
+<div class="relative aspect-[4/4.4] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close up of specialty coffee beans in a ceramic bowl with soft natural window light and warm shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkyEl0hn-R_sQSh47QAwobrDOTDbr8twI-nLV6AXPxC84arT0umkbg893SpEIr49Ak9BudtJNQW7Z3BFFL5CorQA2OsP0e0AeKCNjLdbu0HDyHTeIHUWQkwUtYkyDjUugJGH3aippjm_9L4kLTWoAf7eC-P3pUVjtmKbJlj80XHm_ckpsnHQnsCyA4lqmnACYSznujb-7LcUGyTvq_oiM2RRe0rM-LwG93Tk6mgshPKC6FBH0F_t5pzLvXu_n2HgXGB3DPu9Y47xaU"/>
+<button class="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-full flex items-center justify-center text-primary shadow-sm active:scale-90 transition-all">
+<span class="material-symbols-outlined" data-icon="bookmark" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</button>
+<div class="absolute bottom-4 left-4">
+<span class="px-3 py-1 bg-primary/80 backdrop-blur-md text-on-primary text-[10px] uppercase tracking-widest font-bold rounded-full">Bean Info</span>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<span class="text-xs font-bold text-on-secondary-container mb-1 tracking-wider uppercase">Momos Coffee</span>
+<h3 class="text-lg font-bold text-primary mb-3 leading-tight">Ethiopia Sidama G1</h3>
+<div class="flex flex-wrap gap-1.5 mb-4">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Jasmine</span>
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Peach</span>
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Honey</span>
+</div>
+<div class="mt-auto pt-4 flex items-center justify-between border-t border-surface-container">
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Light Roast</span>
+<span class="text-sm font-black text-primary">₩24,000</span>
+</div>
+</div>
+</article>
+<!-- Bean Card 2 -->
+<article class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_16px_rgba(55,31,23,0.04)] hover:shadow-[0_8px_24px_rgba(55,31,23,0.08)] transition-all flex flex-col">
+<div class="relative aspect-[4/4.4] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Artisanal coffee packaging with elegant typography sitting on a minimal wooden shelf in a Seoul cafe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCE897RlRDetFylfLvRHp4kD-FdacTFh_9JDAO2w8w33bEYMiFaYTSa5gcBMuMWtCzDh3xGnFT7yMwE9BCg60EvIC_Xw4v2TKNEvOtuWxBqlexNzrNGGRXbOlBMMDEA3Pi6alifE4yXMOTIbQle2Ihj5gdOWPG5yTVBulPcG_AgBVYyY6U0fmtHMYw_0NgycAU7CM0oI_TwTdFcZs9YHY0bLMNlPq9sdUfZ97ROraW7c3mPGmkphPVV5OUJWeX07gwiE0Zg8DeCbbIZ"/>
+<button class="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-full flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined" data-icon="bookmark" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</button>
+<div class="absolute bottom-4 left-4">
+<span class="px-3 py-1 bg-primary/80 backdrop-blur-md text-on-primary text-[10px] uppercase tracking-widest font-bold rounded-full">Bean Info</span>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<span class="text-xs font-bold text-on-secondary-container mb-1 tracking-wider uppercase">Fritz Coffee Co.</span>
+<h3 class="text-lg font-bold text-primary mb-3 leading-tight">Colombia El Paraiso</h3>
+<div class="flex flex-wrap gap-1.5 mb-4">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Lychee</span>
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Yogurt</span>
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full">Peach</span>
+</div>
+<div class="mt-auto pt-4 flex items-center justify-between border-t border-surface-container">
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Medium Light Roast</span>
+<span class="text-sm font-black text-primary">₩28,000</span>
+</div>
+</div>
+</article>
+<!-- Class Card 1 -->
+<article class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_16px_rgba(55,31,23,0.04)] hover:shadow-[0_8px_24px_rgba(55,31,23,0.08)] transition-all flex flex-col">
+<div class="relative aspect-[4/4.4] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Overhead view of a hand dripping coffee into a glass server with precise water flow and steam" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsMRfDLyw6u35aAqAcai9Um6Zy-4WxXXDRacS43FGscIPCZlnbtLhnI3wuyvgNoAbXxsYPll5-1v8RQM8MbiJEkG8BrxyjIyGjO_69w7iCN0v19EKb1RzSFDHLbW6mhofgKMZ3jgmnRXlAGcnSK3yA5yAUl4S-G7zHtccHchXnSU_Lq5mW8wGERIrJqvzPBMbGAH7Jw1063jBqZFn4LEXi_QEqMq9lq64XJ7evuxZwf2xJFCbUBhkbFKSp0Nt8TvRx4zW5xUvAianW"/>
+<button class="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-full flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined" data-icon="bookmark" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</button>
+<div class="absolute bottom-4 left-4">
+<span class="px-3 py-1 bg-[#795c51]/80 backdrop-blur-md text-on-primary text-[10px] uppercase tracking-widest font-bold rounded-full">Classes</span>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-bold text-on-secondary-container tracking-wider">SEOUL SEONGSU</span>
+<span class="text-[10px] font-black px-2 py-0.5 bg-surface-container-high rounded text-primary">BEGINNER</span>
+</div>
+<h3 class="text-lg font-bold text-primary mb-2 leading-tight">Hand-drip Basic Class</h3>
+<p class="text-xs text-on-surface-variant font-medium mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+                        April 18th 2:00 PM
+                    </p>
+<div class="mt-auto space-y-3">
+<button class="w-full py-3 bg-surface-container-high text-primary text-xs font-black rounded-lg hover:bg-surface-container transition-colors tracking-widest uppercase">상세보기</button>
+</div>
+</div>
+</article>
+<!-- Class Card 2 -->
+<article class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_16px_rgba(55,31,23,0.04)] hover:shadow-[0_8px_24px_rgba(55,31,23,0.08)] transition-all flex flex-col">
+<div class="relative aspect-[4/4.4] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Interior of a modern minimalist coffee roasting studio with metallic equipment and organized workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc-XMulqj28ydTQmux6CciugV54FFcfqluoz35buewKxpjXkJ-3WR9MgZt-rdjV9zNoypo2VHifsVBKO76IhmjXmSXLntCC60JpjRhQdhT84vOtuSiKEboOVz4lq9aBa1_WzQlhjZ2sJ4IizsV2a7aMWoJUSjo3sVLRv35id0BAh6ktypHaud_nGK6tq_2Lt-CQk1akDJDhTumlY2nbMvZX-lvqarUWROXEctupSI0nWe-yhjHK0ynkxAGKCrZFrQdqQwjVCH1Ja4O"/>
+<button class="absolute top-4 right-4 w-10 h-10 bg-surface/90 backdrop-blur-sm rounded-full flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined" data-icon="bookmark" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</button>
+<div class="absolute bottom-4 left-4">
+<span class="px-3 py-1 bg-[#795c51]/80 backdrop-blur-md text-on-primary text-[10px] uppercase tracking-widest font-bold rounded-full">Classes</span>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-bold text-on-secondary-container tracking-wider">SEOUL MANGWON</span>
+<span class="text-[10px] font-black px-2 py-0.5 bg-surface-container-high rounded text-primary">INTERMEDIATE</span>
+</div>
+<h3 class="text-lg font-bold text-primary mb-2 leading-tight">Home Roasting &amp; Cupping</h3>
+<p class="text-xs text-on-surface-variant font-medium mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+                        April 22nd 7:00 PM
+                    </p>
+<div class="mt-auto space-y-3">
+<button class="w-full py-3 bg-surface-container-high text-primary text-xs font-black rounded-lg hover:bg-surface-container transition-colors tracking-widest uppercase">상세보기</button>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low w-full py-12 px-8">
+<div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-8">
+<div class="flex flex-col items-center md:items-start gap-4">
+<div class="text-sm font-black text-[#371f17] tracking-widest">DRIPNOTE</div>
+<div class="flex gap-6">
+<a class="text-[#795c51] hover:text-[#371f17] transition-colors font-['Be_Vietnam_Pro'] text-[0.6875rem] uppercase tracking-widest" href="#">About Us</a>
+<a class="text-[#795c51] hover:text-[#371f17] transition-colors font-['Be_Vietnam_Pro'] text-[0.6875rem] uppercase tracking-widest" href="#">Brewing Guides</a>
+<a class="text-[#795c51] hover:text-[#371f17] transition-colors font-['Be_Vietnam_Pro'] text-[0.6875rem] uppercase tracking-widest" href="#">Privacy Policy</a>
+<a class="text-[#795c51] hover:text-[#371f17] transition-colors font-['Be_Vietnam_Pro'] text-[0.6875rem] uppercase tracking-widest" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="text-[#795c51] font-['Be_Vietnam_Pro'] text-[0.6875rem] uppercase tracking-widest opacity-60">
+                © 2024 Dripnote. The Curated Warmth.
+            </div>
+</div>
+</footer>
+</body></html>
