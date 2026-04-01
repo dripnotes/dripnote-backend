@@ -10,9 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     /* [추가된 부분]
-       - requestMatchers 내부에 swagger 경로 추가하였습니다.
-       [변경된 부분]
-       - .defaultSuccessUrl("/", true) -> .defaultSuccessUrl("/", false), 로그인 시 사용자가 원래 보던 페이지로 넘어가도록 수정하였습니다.
+       - requestMatchers 내부에 "/api/**" 추가하였습니다.
     */
 
     @Bean
@@ -30,6 +28,7 @@ public class SecurityConfig {
                                 "/beans/**",
                                 "/classes/**",
                                 "/oauth2/**",
+                                "/api/**",
                                 // swagger 경로
                                 "/swagger-custom-ui.html",
                                 "/swagger-ui/**",
