@@ -3,7 +3,7 @@ application.properties
 application.yaml
 application.yml
 
-.gradle
+.gradle/
 build/
 gradle/wrapper/*
 !**/src/main/**/build/
