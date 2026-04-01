@@ -30,12 +30,12 @@ public class SecurityConfig {
                                 "/beans/**",
                                 "/classes/**",
                                 "/oauth2/**",
-
                                 // swagger 경로
                                 "/swagger-custom-ui.html",
                                 "/swagger-ui/**",
                                 "/api-docs",
                                 "/api-docs/**"
+
 
                         ).permitAll()
                         .requestMatchers(
