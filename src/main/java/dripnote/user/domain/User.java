@@ -3,16 +3,19 @@ package dripnote.user.domain;
 import dripnote.user.enums.UserProvider;
 import dripnote.user.enums.UserRole;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+// 세터 삭제했어요
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor // builder때문에 필요
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(name = "unique_provider_id", columnNames = {"provider", "provider_id"})
@@ -31,6 +34,7 @@ public class User {
     private String email;
 
     // OAuth: google, kakao, naver 등
+    @Enumerated(EnumType.STRING) // ENUM
     @Column(name = "provider", nullable = false, length = 20)
     private UserProvider provider;
 
@@ -38,6 +42,7 @@ public class User {
     @Column(name = "provider_id", nullable = false, length = 255)
     private String providerId;
 
+    // 일단
     @Column(name = "nickname", nullable = false, length = 50)
     private String nickname;
 
@@ -55,4 +60,14 @@ public class User {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    public void updateNickname(String newNickname) {
+        if (newNickname == null || newNickname.isBlank()) {
+            throw new IllegalArgumentException("닉네임은 필수 입력값입니다.");
+        }
+
+        // 추후 중복여부 글자수 제한 등 로직 추가
+        this.nickname = newNickname;
+    }
+
 }
