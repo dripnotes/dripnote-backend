@@ -9,15 +9,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    /* [삭제된 부분]
-       - .invalidateHttpSession(true): 디폴트값이 true라 불필요할 것 같아서 삭제합니다.
-       - .logoutUrl("/logout"): 디폴트값이 "/logout"이라 불필요할 것 같아서 삭제합니다.
-       - requestMatchers 내부에 "/main" 삭제, 메인페이지는 "/"으로 사용
-       [추가된 부분]
-       - requestMatchers 내부에 "/oauth2/**" 추가, 추후에 oauth 요청 시 사용
+    /* [추가된 부분]
+       - requestMatchers 내부에 swagger 경로 추가하였습니다.
        [변경된 부분]
-       - .logoutSuccessUrl("/main") -> .logoutSuccessUrl("/")
-       - .defaultSuccessUrl("/main", true) -> .defaultSuccessUrl("/", true)
+       - .defaultSuccessUrl("/", true) -> .defaultSuccessUrl("/", false), 로그인 시 사용자가 원래 보던 페이지로 넘어가도록 수정하였습니다.
     */
 
     @Bean
@@ -34,7 +29,14 @@ public class SecurityConfig {
                                 "/signin",
                                 "/beans/**",
                                 "/classes/**",
-                                "/oauth2/**"
+                                "/oauth2/**",
+                                // swagger 경로
+                                "/swagger-custom-ui.html",
+                                "/swagger-ui/**",
+                                "/api-docs",
+                                "/api-docs/**"
+
+
                         ).permitAll()
                         .requestMatchers(
                                 "/mypage/**"
@@ -45,7 +47,7 @@ public class SecurityConfig {
                 // OAuth2 로그인 설정
                 .oauth2Login(oauth -> oauth
                         .loginPage("/signin") // 커스텀 로그인 페이지 사용 시
-                        .defaultSuccessUrl("/", true) // 로그인 성공 시 이동할 곳
+                        .defaultSuccessUrl("/", false) // 로그인 성공 시 이동할 곳
                 )
 
                 // 로그아웃 설정
