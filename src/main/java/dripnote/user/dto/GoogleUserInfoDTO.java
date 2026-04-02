@@ -6,7 +6,7 @@ import java.util.Map;
 
 // 구글 구현체 DTO
 public class GoogleUserInfoDTO implements OAuth2UserInfo {
-    private Map<String, Object> attributes; // 구글에서 넘어온 JSON 데이터
+    private Map<String, Object> attributes; // 구글 JSON 데이터
 
     public GoogleUserInfoDTO(Map<String, Object> attributes) {
         this.attributes = attributes;

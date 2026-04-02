@@ -2,8 +2,8 @@ package dripnote.user.service;
 
 import dripnote.user.domain.User;
 import dripnote.user.dto.GoogleUserInfoDTO;
+import dripnote.user.dto.NaverUserInfoDTO;
 import dripnote.user.dto.OAuth2UserInfo;
-import dripnote.user.enums.UserProvider;
 import dripnote.user.enums.UserRole;
 import dripnote.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +12,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,8 +35,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             System.out.println("구글 로그인 요청");
             oAuth2UserInfo = new GoogleUserInfoDTO(attributes);
         } else if (registrationId.equals("naver")) {
-            System.out.println("네이버 로그인 요청 (구현 예정)");
-            // oAuth2UserInfo = new NaverUserInfo((Map)attributes.get("response"));
+            System.out.println("네이버 로그인 요청");
+            oAuth2UserInfo = new NaverUserInfoDTO(attributes);
         } else if (registrationId.equals("kakao")) {
             System.out.println("카카오 로그인 요청 (구현 예정)");
             // oAuth2UserInfo = new KakaoUserInfo(attributes);
@@ -55,18 +52,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private void saveOrUpdateUser(OAuth2UserInfo userInfo) {
         if (userInfo == null) return;
         Optional<User> userOptional = userRepository.findByEmail(userInfo.getEmail());
-        // 임시 닉네임
-        String tempNickname = "커피애호가_" + UUID.randomUUID().toString().substring(0, 8);
+        String name = userInfo.getName();
         if (!userOptional.isPresent()) {
             User newUser = User.builder()
                     .email(userInfo.getEmail())
                     .provider(userInfo.getProvider())
                     .providerId(userInfo.getProviderId())
-                    .nickname(tempNickname)
+                    .nickname(name)
                     .role(UserRole.USER)
                     .build();
             userRepository.save(newUser);
-            System.out.println("신규 소셜 유저 회원가입 완료! " + tempNickname);
+            System.out.println("신규 소셜 유저 회원가입 완료! " + name);
 
         }
     }
