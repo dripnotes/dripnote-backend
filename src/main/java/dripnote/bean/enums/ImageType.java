@@ -1,6 +1,6 @@
 package dripnote.bean.enums;
 
-public enum NoteType {
+public enum ImageType {
     MAIN,
     SUB
 }
