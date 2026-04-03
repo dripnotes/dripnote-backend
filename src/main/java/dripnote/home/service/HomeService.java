@@ -9,9 +9,9 @@ import dripnote.bean.repository.BeanImagesRepository;
 import dripnote.bean.repository.BeanTastingNotesRepository;
 import dripnote.bean.repository.BeansRepository;
 import dripnote.bean.repository.TastingNoteRepository;
-import dripnote.home.dto.BeansDTO;
-import dripnote.home.dto.HomeResponseDTO;
-import dripnote.home.dto.TastingsDTO;
+import dripnote.home.payload.dto.HomeBeanDTO;
+import dripnote.home.payload.response.HomeResponse;
+import dripnote.home.payload.dto.HomeTastingsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,26 +30,27 @@ public class HomeService {
     private final BeanImagesRepository beanImagesRepository;
 
     // 메인 페이지 향미, 원두 정보 전송
-    public HomeResponseDTO getHome() {
-        List<TastingsDTO> tastings = getTastings();
-        List<BeansDTO> beans = getBeans();
+    public HomeResponse getHome() {
+        List<HomeTastingsDTO> tastings = getTastings();
+        List<HomeBeanDTO> beans = getBeans();
 
-        return new HomeResponseDTO(tastings, beans);
+        return new HomeResponse(tastings, beans);
     }
 
     // 향미 목록 조회
-    public List<TastingsDTO> getTastings() {
+    public List<HomeTastingsDTO> getTastings() {
         List<TastingNote> tastingNotes = tastingNoteRepository.findTop4ByOrderByTastingNoteIdAsc();
 
         return tastingNotes.stream()
-                .map(tastingNote -> new TastingsDTO(
-                        tastingNote.getNameKo(),
-                        "/bean?tastingId=" + tastingNote.getTastingNoteId()
-                )).toList();
+                .map(tastingNote -> HomeTastingsDTO.builder()
+                        .tasting_name(tastingNote.getNameKo())
+                        .tasting_link("/bean?tastingId=" + tastingNote.getTastingNoteId())
+                        .build()
+                ).toList();
     }
 
     // 원두 목록 조회
-    private List<BeansDTO> getBeans() {
+    private List<HomeBeanDTO> getBeans() {
         List<Bean> beans = beansRepository.findTop4ByOrderByCreatedAtDesc();
 
         if (beans.isEmpty()) {
@@ -84,12 +85,12 @@ public class HomeService {
         }
 
         return beans.stream()
-                .map(bean -> new BeansDTO(
-                        bean.getNameKo(),
-                        beanTastingMap.getOrDefault(bean.getBeanId(), List.of()),
-                        beanMainImageMap.get(bean.getBeanId()),
-                        "/beans/detail/" + bean.getBeanId()
-                ))
-                .toList();
+                .map(bean -> HomeBeanDTO.builder()
+                        .bean_name(bean.getNameKo())
+                        .bean_tasting(beanTastingMap.getOrDefault(bean.getBeanId(), List.of()))
+                        .bean_link("/beans/detail/" + bean.getBeanId())
+                        .bean_image_link(beanMainImageMap.get(bean.getBeanId()))
+                        .build()
+                ).toList();
     }
 }
