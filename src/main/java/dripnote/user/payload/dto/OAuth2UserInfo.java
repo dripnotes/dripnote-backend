@@ -1,4 +1,4 @@
-package dripnote.user.dto;
+package dripnote.user.payload.dto;
 
 import dripnote.user.enums.UserProvider;
 

@@ -29,8 +29,8 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
-    // OAuth 정책상 이메일은 선택인 경우가 많아 nullable = true(디폴트)로 변경
-    @Column(name = "email", length = 255)
+    // Kakao, Naver, Google 전부 이메일을 제공해서 null false로 수정하였습니다.
+    @Column(name = "email", nullable = false, length = 255)
     private String email;
 
     // OAuth: google, kakao, naver 등

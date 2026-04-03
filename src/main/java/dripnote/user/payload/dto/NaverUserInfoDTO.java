@@ -1,8 +1,6 @@
-package dripnote.user.dto;
+package dripnote.user.payload.dto;
 
 import dripnote.user.enums.UserProvider;
-
-import java.util.Arrays;
 import java.util.Map;
 
 public class NaverUserInfoDTO implements OAuth2UserInfo {
@@ -22,6 +20,7 @@ public class NaverUserInfoDTO implements OAuth2UserInfo {
     public String getProviderId() {
         return (String) response.get("id");
     }
+
 
     @Override
     public String getEmail() {
