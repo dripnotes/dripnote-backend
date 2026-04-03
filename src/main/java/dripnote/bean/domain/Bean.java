@@ -15,6 +15,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "beans")
 public class Bean {
+    /**[삭제된 부분]
+     * @UpdateTimestamp
+     *     @Column(name = "updated_at", nullable = false)
+     *     private LocalDateTime updatedAt;
+     * 해당 부분은 불필요할 것 같아서 삭제하였습니다!
+     *
+     *
+     */
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,8 +81,4 @@ public class Bean {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 }
