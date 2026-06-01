@@ -12,8 +12,7 @@ import java.util.Optional;
 
 public interface ProductBookmarkRepository extends JpaRepository<ProductBookmark, Long> {
     Optional<ProductBookmark> findByUserAndProduct(User user, Product product);
-    boolean existsByUserAndProduct(User user, Product product);
-    void deleteByUserAndProduct(User user, Product product);
+    boolean existsByUser_UserIdAndProduct_ProductId(Long userId, Long productId);
 
     /**
      * 벌크 삭제: 특정 사용자의 모든 북마크 삭제

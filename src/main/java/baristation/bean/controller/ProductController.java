@@ -4,9 +4,11 @@ import baristation.bean.payload.dto.ProductDetailDTO;
 import baristation.bean.payload.dto.ProductSummaryDTO;
 import baristation.bean.payload.request.ProductSearchRequest;
 import baristation.bean.service.BeanService;
+import baristation.common.logging.TraceIdUtil;
 import baristation.common.payload.response.ApiResponse;
 import baristation.common.payload.response.PageResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -29,8 +31,11 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ApiResponse<ProductDetailDTO>> getProductDetail(@PathVariable Long productId) {
-        ProductDetailDTO response = beanService.getProductDetail(productId);
+    public ResponseEntity<ApiResponse<ProductDetailDTO>> getProductDetail(
+            @PathVariable Long productId,
+            @CurrentUserId Long userId) {
+        ProductDetailDTO response = beanService.getProductDetail(productId, userId);
+
         return ApiResponse.ok(response);
     }
 }

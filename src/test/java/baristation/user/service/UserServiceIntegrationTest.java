@@ -14,6 +14,7 @@ import baristation.common.redis.RedisService;
 import baristation.lesson.domain.Lesson;
 import baristation.lesson.enums.DifficultyLevel;
 import baristation.lesson.enums.LessonCategory;
+import baristation.lesson.enums.Region;
 import baristation.bean.enums.RoastingType;
 import baristation.lesson.repository.LessonRepository;
 import baristation.security.jwt.JwtTokenProvider;
@@ -141,7 +142,7 @@ class UserServiceIntegrationTest {
                 .subtitle("테스트")
                 .lessonCategory(LessonCategory.HOBBY)
                 .difficultyLevel(DifficultyLevel.BEGINNER)
-                .region("SEOUL")
+                .region(Region.SEOUL)
                 .city("마포구")
                 .place("테스트공간")
                 .address("서울특별시 마포구")

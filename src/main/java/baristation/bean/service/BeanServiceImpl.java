@@ -10,6 +10,7 @@ import baristation.bean.payload.request.ProductSearchRequest;
 import baristation.bean.repository.BeanProductRepository;
 import baristation.bean.repository.ProductFlavorNoteRepository;
 import baristation.bean.repository.ProductImageRepository;
+import baristation.bookmark.repository.ProductBookmarkRepository;
 import baristation.common.exception.CustomException;
 import baristation.common.exception.ErrorCode;
 import baristation.common.payload.response.PageResponse;
@@ -31,6 +32,7 @@ public class BeanServiceImpl implements BeanService {
     private final BeanProductRepository beanProductRepository;
     private final ProductFlavorNoteRepository productFlavorNoteRepository;
     private final ProductImageRepository productImageRepository;
+    private final ProductBookmarkRepository productBookmarkRepository;
     private final ImageUrlResolver imageUrlResolver;
 
     /**
@@ -77,7 +79,7 @@ public class BeanServiceImpl implements BeanService {
         return PageResponse.of(page);
     }
     @Override
-    public ProductDetailDTO getProductDetail(Long productId) {
+    public ProductDetailDTO getProductDetail(Long productId, Long userId) {
 
         BeanProduct selectedBeanProduct = beanProductRepository.findByProductId(productId);
 
@@ -105,6 +107,7 @@ public class BeanServiceImpl implements BeanService {
                 .orElse(null);
 
         List<FlavorNoteDTO> flavorNotes = getFlavorNotes(resolvedProductId);
+        boolean bookmarked = userId != null && productBookmarkRepository.existsByUser_UserIdAndProduct_ProductId(userId, resolvedProductId);
 
         // 3. 상세 DTO 조립
         ProductSummaryDTO summary = ProductSummaryDTO.builder()
@@ -131,6 +134,7 @@ public class BeanServiceImpl implements BeanService {
                 .body(product.getBody())
                 .balance(product.getBalance())
                 .images(images)
+                .bookmarked(bookmarked)
                 .build();
     }
 

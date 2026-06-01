@@ -34,3 +34,6 @@ GET http://localhost:8080/api/products/search?keyword=berry&flavorCategory=FRUIT
 ### 12. 필터 초기화 케이스 (페이지/사이즈만)
 GET http://localhost:8080/api/products/search?page=0&size=12
 
+### 13. 원두 상세 조회 (1)
+GET http://localhost:8080/api/products/1
+Authorization: Bearer {{JWT_TOKEN}}

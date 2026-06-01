@@ -6,6 +6,7 @@ import baristation.bean.domain.FlavorNote;
 import baristation.bean.domain.Product;
 import baristation.bean.domain.ProductFlavorNote;
 import baristation.bean.domain.ProductImage;
+import baristation.bean.domain.ProductBookmark;
 import baristation.bean.domain.Roaster;
 import baristation.bean.enums.BeanSortType;
 import baristation.bean.enums.FlavorCategory;
@@ -15,10 +16,12 @@ import baristation.bean.payload.dto.ProductDetailDTO;
 import baristation.bean.payload.dto.ProductSummaryDTO;
 import baristation.bean.payload.request.ProductSearchRequest;
 import baristation.bean.repository.*;
+import baristation.bookmark.repository.ProductBookmarkRepository;
 import baristation.common.exception.CustomException;
 import baristation.common.exception.ErrorCode;
 import baristation.common.payload.response.PageResponse;
 import baristation.common.r2.R2ImageService;
+import baristation.user.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -67,6 +70,12 @@ class BeanServiceIntegrationTest {
 
     @Autowired
     private ProductFlavorNoteRepository productFlavorNoteRepository;
+
+    @Autowired
+    private ProductBookmarkRepository productBookmarkRepository;
+
+    @Autowired
+    private baristation.user.repository.UserRepository userRepository;
 
     @Autowired
     private FlavorNoteRepository flavorNoteRepository;
@@ -283,10 +292,10 @@ class BeanServiceIntegrationTest {
         Pageable pageable = PageRequest.of(0, 2);
         ProductSearchRequest request = new ProductSearchRequest(
                 null, null,
-                null, null,
-                null, null,
-                null, null,
-                null, null,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
                 null, BeanSortType.LATEST
         );
 
@@ -315,10 +324,10 @@ class BeanServiceIntegrationTest {
         Pageable pageable = PageRequest.of(0, 12);
         ProductSearchRequest request = new ProductSearchRequest(
                 "ethiopia", null,
-                null, null,
-                null, null,
-                null, null,
-                null, null,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
                 null, null
         );
 
@@ -341,10 +350,10 @@ class BeanServiceIntegrationTest {
         Pageable pageable = PageRequest.of(0, 12);
         ProductSearchRequest request = new ProductSearchRequest(
                 null, null,
-                null, null,
-                null, null,
-                null, null,
-                null, null,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
                 RoastingType.LIGHT, null
         );
 
@@ -369,9 +378,9 @@ class BeanServiceIntegrationTest {
         ProductSearchRequest request = new ProductSearchRequest(
                 null, null,
                 4.0, 5.0,
-                null, null,
-                null, null,
-                null, null,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
                 null, null
         );
 
@@ -395,10 +404,10 @@ class BeanServiceIntegrationTest {
         Pageable pageable = PageRequest.of(0, 12);
         ProductSearchRequest request = new ProductSearchRequest(
                 null, FlavorCategory.NUTTY,
-                null, null,
-                null, null,
-                null, null,
-                null, null,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
                 null, null
         );
 
@@ -424,10 +433,10 @@ class BeanServiceIntegrationTest {
         Pageable pageable = PageRequest.of(0, 12);
         ProductSearchRequest request = new ProductSearchRequest(
                 null, null,
-                null, null,
-                null, null,
-                null, null,
-                null, null,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
                 null, BeanSortType.NAME
         );
 
@@ -448,10 +457,10 @@ class BeanServiceIntegrationTest {
         Pageable pageable = PageRequest.of(0, 12);
         ProductSearchRequest request = new ProductSearchRequest(
                 null, null,
-                null, null,
-                null, null,
-                null, null,
-                null, null,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
                 null, BeanSortType.ACIDITY
         );
 
@@ -473,10 +482,10 @@ class BeanServiceIntegrationTest {
         Pageable pageable = PageRequest.of(0, 12);
         ProductSearchRequest request = new ProductSearchRequest(
                 null, null,
-                null, null,
-                null, null,
-                null, null,
-                null, null,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
                 null,null
         );
 
@@ -524,7 +533,7 @@ class BeanServiceIntegrationTest {
     @Test
     @DisplayName("통합 테스트: 상세 조회 - 모든 필드 검증")
     void getProductDetail_returnsCompleteDetail() {
-        ProductDetailDTO detail = beanService.getProductDetail(ethiopiaProduct.getProductId());
+        ProductDetailDTO detail = beanService.getProductDetail(ethiopiaProduct.getProductId(), null);
 
         // 로그 출력
         log.info("[detail] productId='{}' beanName='{}' roaster='{}' acidity='{}' body='{}'",
@@ -554,6 +563,42 @@ class BeanServiceIntegrationTest {
         assertThat(detail.roaster().nameKo()).isEqualTo("드립노트 로스터리");
         assertThat(detail.acidity()).isEqualTo(5.0);
         assertThat(detail.body()).isEqualTo(2.0);
+        assertThat(detail.bookmarked()).isFalse();
+    }
+
+    @Test
+    @DisplayName("통합 테스트: 상세 조회 - 로그인 사용자가 북마크한 경우 bookmarked=true")
+    void getProductDetail_bookmarkedByUser_returnsTrue() {
+        User user = userRepository.save(User.builder()
+                .provider(baristation.user.enums.UserProvider.KAKAO)
+                .providerId("bookmark-user-1")
+                .nickname("bookmarkUser")
+                .role(baristation.user.enums.UserRole.USER)
+                .build());
+
+        productBookmarkRepository.save(ProductBookmark.builder()
+                .user(user)
+                .product(ethiopiaProduct)
+                .build());
+
+        ProductDetailDTO detail = beanService.getProductDetail(ethiopiaProduct.getProductId(), user.getUserId());
+
+        assertThat(detail.bookmarked()).isTrue();
+    }
+
+    @Test
+    @DisplayName("통합 테스트: 상세 조회 - 로그인 사용자가 북마크하지 않은 경우 bookmarked=false")
+    void getProductDetail_bookmarkedByUser_returnsFalse() {
+        User user = userRepository.save(User.builder()
+                .provider(baristation.user.enums.UserProvider.KAKAO)
+                .providerId("bookmark-user-1")
+                .nickname("bookmarkUser")
+                .role(baristation.user.enums.UserRole.USER)
+                .build());
+
+        ProductDetailDTO detail = beanService.getProductDetail(ethiopiaProduct.getProductId(), user.getUserId());
+
+        assertThat(detail.bookmarked()).isFalse();
     }
 
     @Test
@@ -561,7 +606,7 @@ class BeanServiceIntegrationTest {
     void getProductDetail_notFound_throwsError() {
         log.info("[detailNotFound] requesting productId=999999L -> expecting BEAN_NOT_FOUND");
 
-        assertThatThrownBy(() -> beanService.getProductDetail(999999L))
+        assertThatThrownBy(() -> beanService.getProductDetail(999999L, null))
                 .isInstanceOf(CustomException.class)
                 .extracting(ex -> ((CustomException) ex).getErrorCode())
                 .isEqualTo(ErrorCode.BEAN_NOT_FOUND);
@@ -573,10 +618,10 @@ class BeanServiceIntegrationTest {
         Pageable pageable = PageRequest.of(1, 2);
         ProductSearchRequest request = new ProductSearchRequest(
                 null, null,
-                null, null,
-                null, null,
-                null, null,
-                null, null,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
                 null, null
         );
 
@@ -600,9 +645,9 @@ class BeanServiceIntegrationTest {
         ProductSearchRequest request = new ProductSearchRequest(
                 null, null,
                 3.0, 5.0,
-                null, null,
-                null, null,
-                null,null,
+                0.1, 5.0,
+                0.1, 5.0,
+                0.1, 5.0,
                 RoastingType.MEDIUM, null
         );
 

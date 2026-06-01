@@ -15,5 +15,5 @@ public interface BeanService {
     /**
      * 원두 단건 상세 조회
      */
-    ProductDetailDTO getProductDetail(Long productId);
+    ProductDetailDTO getProductDetail(Long productId, Long userId);
 }

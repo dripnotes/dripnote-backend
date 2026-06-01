@@ -124,7 +124,7 @@ public class UserService {
         // 2. 자식 데이터 벌크 삭제 (외래키 참조 순서 주의: 자식 -> 부모)
         careerRepository.deleteAllByUserIdInQuery(userId);
         productBookmarkRepository.deleteAllByUserIdInQuery(userId);
-        
+
         // 상품 리뷰와 레슨 리뷰는 user_id를 0으로 덮어씌우기 (데이터 보존)
         productReviewRepository.updateUserIdToDeletedByUserIdInQuery(userId);
         lessonReviewRepository.updateUserIdToDeletedByUserIdInQuery(userId);
@@ -145,9 +145,6 @@ public class UserService {
         // 6. R2 파일 삭제 이벤트 발행
         // (DB 트랜잭션 커밋 후 AFTER_COMMIT 리스너가 비동기로 처리)
         eventPublisher.publishEvent(new UserDeletedEvent(userId, fileKeysToDelete, TraceIdUtil.getTraceId()));
-
-        log.info("[Auth] User withdrawal completed. userId={}, fileCount={}, traceId={}",
-                userId, fileKeysToDelete.size(), TraceIdUtil.getTraceId());
     }
 
     /**

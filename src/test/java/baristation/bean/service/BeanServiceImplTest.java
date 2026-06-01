@@ -18,9 +18,11 @@ import baristation.bean.payload.request.ProductSearchRequest;
 import baristation.bean.repository.BeanProductRepository;
 import baristation.bean.repository.ProductFlavorNoteRepository;
 import baristation.bean.repository.ProductImageRepository;
+import baristation.bookmark.repository.ProductBookmarkRepository;
 import baristation.common.exception.CustomException;
 import baristation.common.exception.ErrorCode;
 import baristation.common.payload.response.PageResponse;
+import baristation.common.r2.ImageUrlResolver;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,12 +54,19 @@ class BeanServiceImplTest {
     @Mock
     private ProductImageRepository productImageRepository;
 
+    @Mock
+    private ProductBookmarkRepository productBookmarkRepository;
+
+    @Mock
+    private ImageUrlResolver imageUrlResolver;
+
     @InjectMocks
     private BeanServiceImpl beanService;
 
     @Test
     @DisplayName("원두 목록 조회: DB 없이 mock 엔티티로 페이지/썸네일 매핑을 검증한다")
     void searchProducts_withMockEntities_returnsPagedSummary() {
+        when(imageUrlResolver.toPublicUrl(any())).thenAnswer(invocation -> invocation.getArgument(0));
         Pageable pageable = PageRequest.of(0, 12);
         ProductSearchRequest request = new ProductSearchRequest(
                 "ethiopia", FlavorCategory.CHOCOLATY,
@@ -189,6 +198,7 @@ class BeanServiceImplTest {
     @Test
     @DisplayName("원두 상세 조회: mock 엔티티로 썸네일/상세이미지/향미노트 매핑을 검증한다")
     void getProductDetail_withMockEntities_returnsDetail() {
+        when(imageUrlResolver.toPublicUrl(any())).thenAnswer(invocation -> invocation.getArgument(0));
         Long productId = 300L;
 
         Bean bean = Bean.builder()
@@ -267,7 +277,7 @@ class BeanServiceImplTest {
         when(productFlavorNoteRepository.findByProduct_ProductIdIn(List.of(productId)))
                 .thenReturn(List.of(productFlavorNote));
 
-        ProductDetailDTO detail = beanService.getProductDetail(productId);
+        ProductDetailDTO detail = beanService.getProductDetail(productId, null);
 
         assertThat(detail.beanSummary().productId()).isEqualTo(productId);
         assertThat(detail.beanSummary().beanNameKo()).isEqualTo("콜롬비아 수프리모");
@@ -280,6 +290,59 @@ class BeanServiceImplTest {
         assertThat(detail.flavorNotes()).hasSize(1);
         assertThat(detail.flavorNotes().getFirst().nameKo()).isEqualTo("헤이즐넛");
         assertThat(detail.roaster().nameKo()).isEqualTo("바리스테이션 로스터리");
+        assertThat(detail.bookmarked()).isFalse();
+    }
+
+    @Test
+    @DisplayName("원두 상세 조회: 로그인 사용자가 북마크한 상품이면 bookmarked=true를 반환한다")
+    void getProductDetail_withBookmark_returnsBookmarkedTrue() {
+        Long productId = 301L;
+        Long userId = 7L;
+
+        Bean bean = Bean.builder()
+                .nameKo("브라질 산토스")
+                .nameEn("Brazil Santos")
+                .process("Natural")
+                .origin("Brazil")
+                .region("Minas Gerais")
+                .build();
+
+        Roaster roaster = Roaster.builder()
+                .roasterId(78L)
+                .nameKo("테스트 로스터리")
+                .nameEn("Test Roastery")
+                .homepageUrl("https://dripnote.example.com")
+                .description("테스트용 로스터리")
+                .build();
+
+        Product product = Product.builder()
+                .productId(productId)
+                .roastLevel(RoastingType.MEDIUM)
+                .acidity(3.0)
+                .sweetness(3.0)
+                .body(3.0)
+                .balance(3.0)
+                .description("견과류와 캐러멜의 밸런스")
+                .roaster(roaster)
+                .build();
+
+        BeanProduct selected = mock(BeanProduct.class);
+        when(selected.getBean()).thenReturn(bean);
+        when(selected.getProduct()).thenReturn(product);
+        when(beanProductRepository.findByProductId(productId)).thenReturn(selected);
+
+        when(productImageRepository.findByProduct_ProductIdOrderBySortOrderAsc(productId))
+                .thenReturn(List.of());
+        when(productImageRepository.findByProduct_ProductIdAndImageTypeOrderBySortOrderAsc(productId, ImageType.THUMB))
+                .thenReturn(List.of());
+        when(productFlavorNoteRepository.findByProduct_ProductIdIn(List.of(productId)))
+                .thenReturn(List.of());
+        when(productBookmarkRepository.existsByUser_UserIdAndProduct_ProductId(userId, productId))
+                .thenReturn(true);
+
+        ProductDetailDTO detail = beanService.getProductDetail(productId, userId);
+
+        assertThat(detail.bookmarked()).isTrue();
     }
 
     @Test
@@ -287,7 +350,7 @@ class BeanServiceImplTest {
     void getProductDetail_whenMissing_throwsCustomException() {
         when(beanProductRepository.findByProductId(any())).thenReturn(null);
 
-        assertThatThrownBy(() -> beanService.getProductDetail(999L))
+        assertThatThrownBy(() -> beanService.getProductDetail(999L, null))
                 .isInstanceOf(CustomException.class)
                 .extracting(ex -> ((CustomException) ex).getErrorCode())
                 .isEqualTo(ErrorCode.BEAN_NOT_FOUND);
@@ -296,6 +359,7 @@ class BeanServiceImplTest {
     @Test
     @DisplayName("원두 목록 조회: 조건이 아예 없는 경우")
     void searchProducts_withEmptyRequest_returnsPagedSummary() {
+        when(imageUrlResolver.toPublicUrl(any())).thenAnswer(invocation -> invocation.getArgument(0));
         Pageable pageable = PageRequest.of(0, 12);
         ProductSearchRequest request = new ProductSearchRequest(
                 null, null,

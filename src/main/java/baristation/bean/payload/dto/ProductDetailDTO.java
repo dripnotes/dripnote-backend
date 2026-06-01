@@ -19,7 +19,8 @@ public record ProductDetailDTO(
         Double sweetness,
         Double body,
         Double balance,
-        List<ProductImageDTO> images
+        List<ProductImageDTO> images,
+        boolean bookmarked
 ) {
 }
 

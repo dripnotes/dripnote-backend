@@ -1,7 +1,9 @@
 package baristation.user.event;
 
+import baristation.common.logging.TraceIdUtil;
 import baristation.common.r2.R2ImageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -19,6 +21,7 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class R2FileDeleteEventListener {
 
     private final R2ImageService r2ImageService;
