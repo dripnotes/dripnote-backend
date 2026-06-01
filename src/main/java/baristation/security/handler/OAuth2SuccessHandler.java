@@ -1,5 +1,6 @@
 package baristation.security.handler;
 
+import baristation.common.annotation.ExternalApiLog;
 import baristation.common.cookie.CookieUtil;
 import baristation.common.exception.CustomException;
 import baristation.common.exception.ErrorCode;
@@ -42,6 +43,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private String frontendBaseUrl;
 
     @Override
+    @ExternalApiLog("OAuth2 Success Handler")
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) authentication;

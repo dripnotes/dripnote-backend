@@ -10,16 +10,16 @@ GET http://localhost:8080/oauth2/authorization/kakao
 
 ### 1. 토큰 재발급 테스트
 POST http://localhost:8080/api/auth/refresh
-Cookie: refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1Iiwicm9sZSI6IlVTRVIiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc3OTI0NzIzMywiZXhwIjoxNzgxODM5MjMzfQ.STyDAgya2oXNogUNyZ1i7M-9MMncxscsW9VcBDyZoFU
+Cookie: refreshToken={{REFRESH_TOKEN}}
 ### 2. 로그아웃 테스트
 POST http://localhost:8080/api/auth/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzYxMjcyMjMsImV4cCI6MTc3NjE3MDQyM30.tmcw9K3ao1G41MXSpbBzQ0XgIVLLg-DJkgVAt1X2jo0
+Authorization: Bearer {{JWT_TOKEN}}
 
 // eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJuYW1lIjoi7LWc7ISx7JqwIiwiZW1haWwiOiJncmVlbnRqZGRuQGdtYWlsLmNvbSIsInByb2ZpbGVJbWFnZVVybCI6IiIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg5MjM2MDQsImV4cCI6MTc3ODk2NjgwNH0.GKHPR5yzBZxt87YBtaiVI40E01oe4S0jBLXqHUU5njg
 
 ### 3-1. 회원 정보 수정 테스트 (닉네임만)
 PUT http://localhost:8080/api/auth/update
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJuYW1lIjoi7LWc7ISx7JqwIiwiZW1haWwiOiJncmVlbnRqZGRuQGdtYWlsLmNvbSIsInByb2ZpbGVJbWFnZVVybCI6IiIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg5MjQxMzYsImV4cCI6MTc3ODk2NzMzNn0.MxjynJvs733q8tyRj8Nr-GNyrhLVC2T9Yezpgpb_40Y
+Authorization: Bearer {{JWT_TOKEN}}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
@@ -27,13 +27,13 @@ Content-Disposition: form-data; name="data"
 Content-Type: application/json
 
 {
-  "nickname": "최성흐에"
+  "nickname": "최성후이잉"
 }
 --WebAppBoundary--
 
 ### 3-2. 회원 정보 수정 테스트 (닉네임 + 프로필 이미지)
 PUT http://localhost:8080/api/auth/update
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJuYW1lIjoi7LWc7ISx7JqwIiwiZW1haWwiOiJncmVlbnRqZGRuQGdtYWlsLmNvbSIsInByb2ZpbGVJbWFnZVVybCI6IiIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg5MjQxMzYsImV4cCI6MTc3ODk2NzMzNn0.MxjynJvs733q8tyRj8Nr-GNyrhLVC2T9Yezpgpb_40Y
+Authorization: Bearer {{JWT_TOKEN}}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
@@ -41,29 +41,15 @@ Content-Disposition: form-data; name="data"
 Content-Type: application/json
 
 {
-  "nickname": "최성흐에"
+  "nickname": "최성잉"
 }
 --WebAppBoundary
-Content-Disposition: form-data; name="profileImage"; filename="test-image.png"
+Content-Disposition: form-data; name="profileImage"; filename="test-image2.png"
 Content-Type: image/png
 
 < ./test-image.png
 --WebAppBoundary--
 ### 4. 회원 탈퇴 테스트
 DELETE http://localhost:8080/api/auth/delete
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzYxMjcyMjMsImV4cCI6MTc3ODcxOTIyM30.8tPmnNVOaQgdLESBT2lzKH2o_DOuqJ7cKm8qh4qPDfg
-
-### 5-1. 북마크 추가/삭제 토글 테스트 (productId=1)
-POST http://localhost:8080/api/bookmarks/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJuYW1lIjoi7LWc7ISx7JqwIiwiZW1haWwiOiJncmVlbnRqZGRuQGdtYWlsLmNvbSIsInByb2ZpbGVJbWFnZVVybCI6IiIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg5MjQxMzYsImV4cCI6MTc3ODk2NzMzNn0.MxjynJvs733q8tyRj8Nr-GNyrhLVC2T9Yezpgpb_40Y
-
-### 5-2. 북마크 목록 조회 테스트
-GET http://localhost:8080/api/bookmarks/list?page=0&size=12
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJuYW1lIjoi7LWc7ISx7JqwIiwiZW1haWwiOiJncmVlbnRqZGRuQGdtYWlsLmNvbSIsInByb2ZpbGVJbWFnZVVybCI6IiIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg5MjQxMzYsImV4cCI6MTc3ODk2NzMzNn0.MxjynJvs733q8tyRj8Nr-GNyrhLVC2T9Yezpgpb_40Y
-
-### 5-3. 북마크 추가 후 목록 조회 (productId=2)
-POST http://localhost:8080/api/bookmarks/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IlVTRVIiLCJuYW1lIjoi7LWc7ISx7JqwIiwiZW1haWwiOiJncmVlbnRqZGRuQGdtYWlsLmNvbSIsInByb2ZpbGVJbWFnZVVybCI6IiIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Nzg5MjQxMzYsImV4cCI6MTc3ODk2NzMzNn0.MxjynJvs733q8tyRj8Nr-GNyrhLVC2T9Yezpgpb_40Y
-
-### 5-4. 인증 없이 북마크 추가 시도 (401 반환 확인)
-POST http://localhost:8080/api/bookmarks/1
+Authorization: Bearer {{JWT_TOKEN}}
+Cookie: refreshToken={{REFRESH_TOKEN}}

@@ -30,8 +30,9 @@ public class TraceLoggingFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        long startTime = System.currentTimeMillis();
+        String uri = request.getRequestURI();
 
+        // traceId 생성 (모든 요청에 적용)
         String traceId = request.getHeader(TRACE_ID_HEADER);
         if (!StringUtils.hasText(traceId)) {
             traceId = UUID.randomUUID().toString();
@@ -40,7 +41,15 @@ public class TraceLoggingFilter extends OncePerRequestFilter {
         MDC.put(TraceIdUtil.TRACE_ID_KEY, traceId);
         response.setHeader(TRACE_ID_HEADER, traceId);
 
-        log.info("[Inbound] method={}, uri={}, traceId={}", request.getMethod(), request.getRequestURI(), traceId);
+        // Swagger, favicon, OAuth2 리다이렉트 경로는 필터 로깅 제외
+        boolean skipLogging = uri.startsWith("/swagger-ui") || uri.startsWith("/api-docs") || uri.equals("/favicon.ico")
+                || uri.startsWith("/oauth2/authorization") || uri.startsWith("/login/oauth2/code");
+
+        if (!skipLogging) {
+            log.info("[Inbound] method={}, uri={}, traceId={}", request.getMethod(), request.getRequestURI(), traceId);
+        }
+
+        long startTime = System.currentTimeMillis();
 
         try {
             filterChain.doFilter(request, response);
@@ -48,12 +57,14 @@ public class TraceLoggingFilter extends OncePerRequestFilter {
             long durationMs = System.currentTimeMillis() - startTime;
             int status = response.getStatus();
 
-            if (status >= 500) {
-                log.error(RESPONSE_LOG_PATTERN, status, durationMs, traceId);
-            } else if (status >= 400) {
-                log.warn(RESPONSE_LOG_PATTERN, status, durationMs, traceId);
-            } else {
-                log.info(RESPONSE_LOG_PATTERN, status, durationMs, traceId);
+            if (!skipLogging) {
+                if (status >= 500) {
+                    log.error(RESPONSE_LOG_PATTERN, status, durationMs, traceId);
+                } else if (status >= 400) {
+                    log.warn(RESPONSE_LOG_PATTERN, status, durationMs, traceId);
+                } else {
+                    log.info(RESPONSE_LOG_PATTERN, status, durationMs, traceId);
+                }
             }
 
             MDC.clear();

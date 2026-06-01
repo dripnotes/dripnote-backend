@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -22,4 +23,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByNicknameIgnoreCase(@Param("nickname") String nickname);
 
     Optional<User> getUserByUserId(Long userId);
+
+    /**
+     * 사용자의 프로필 이미지 키 목록 조회
+     * (회원 탈퇴 시 R2 파일 삭제용)
+     */
+    @Query("SELECT u.profileImageUrl FROM User u WHERE u.userId = :userId AND u.profileImageUrl IS NOT NULL")
+    List<String> findProfileImageKeysByUserId(@Param("userId") Long userId);
 }

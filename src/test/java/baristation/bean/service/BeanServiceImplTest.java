@@ -113,7 +113,7 @@ class BeanServiceImplTest {
         when(beanProduct2.getProduct()).thenReturn(product2);
 
         Page<BeanProduct> page = new PageImpl<>(List.of(beanProduct1, beanProduct2), pageable, 2);
-        when(beanProductRepository.searchBeansWithFilters(request, pageable)).thenReturn(page);
+        when(beanProductRepository.searchProductsWithFilters(request, pageable)).thenReturn(page);
 
         ProductImage thumb = ProductImage.builder()
                 .productImageId(9001L)
@@ -351,7 +351,7 @@ class BeanServiceImplTest {
         when(beanProduct2.getProduct()).thenReturn(product2);
 
         Page<BeanProduct> page = new PageImpl<>(List.of(beanProduct1, beanProduct2), pageable, 2);
-        when(beanProductRepository.searchBeansWithFilters(request, pageable)).thenReturn(page);
+        when(beanProductRepository.searchProductsWithFilters(request, pageable)).thenReturn(page);
 
         ProductImage thumb = ProductImage.builder()
                 .productImageId(9001L)

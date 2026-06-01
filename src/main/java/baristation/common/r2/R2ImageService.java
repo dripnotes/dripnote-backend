@@ -1,8 +1,7 @@
 package baristation.common.r2;
 
+import baristation.common.annotation.ExternalApiLog;
 import baristation.common.exception.CustomException;
-import baristation.common.logging.TraceIdUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +18,6 @@ import static baristation.common.exception.ErrorCode.*;
 
 @Service
 @ConditionalOnProperty(prefix = "app.r2", name = "enabled", havingValue = "true", matchIfMissing = true)
-@Slf4j
 public class R2ImageService {
 
     // 허용할 이미지 타입
@@ -46,6 +44,7 @@ public class R2ImageService {
      * 원두 대표(THUMB) 이미지 업로드
      * 저장 경로: beans/{productId}/thumb.webp
      */
+    @ExternalApiLog("R2 원두 Thumb 이미지 업로드")
     public String uploadBeanThumb(MultipartFile file, Long beanId) throws IOException {
         // 원두 이미지는 DB에 전체 URL이 아니라 objectKey 형태로 저장합니다.
         return uploadFixedFile(file, buildBeanFolder(beanId), "thumb");
@@ -55,24 +54,27 @@ public class R2ImageService {
      * 원두 서브(SUB) 이미지 업로드
      * 저장 경로: beans/{productId}/sub_{uuid}.webp
      */
+    @ExternalApiLog("R2 원두 Sub 이미지 업로드")
     public String uploadBeanSubImage(MultipartFile file, Long beanId) throws IOException {
         // 원두 이미지는 DB에 public URL prefix 없이 path만 저장합니다.
         return uploadUniqueFile(file, buildBeanFolder(beanId), "sub");
     }
 
     /**
-     * 클래스 대표(THUMB) 이미지 업로드
+     * 레슨 대표(THUMB) 이미지 업로드
      * 저장 경로: lessons/{lessonId}/thumb.webp
      */
+    @ExternalApiLog("R2 레슨 Thumb 이미지 업로드")
     public String uploadLessonThumb(MultipartFile file, Long lessonId) throws IOException {
         // 레슨 이미지는 향미 이미지와 동일하게 DB에 path/objectKey만 저장합니다.
         return uploadFixedFile(file, buildLessonFolder(lessonId), "thumb");
     }
 
     /**
-     * 클래스 서브(SUB) 이미지 업로드
+     * 레슨 서브(SUB) 이미지 업로드
      * 저장 경로: lessons/{lessonId}/sub_{uuid}.webp
      */
+    @ExternalApiLog("R2 레슨 Sub 이미지 업로드")
     public String uploadLessonSubImage(MultipartFile file, Long lessonId) throws IOException {
         // 레슨 이미지는 저장 시 objectKey만 남기고, 응답 서비스에서 public URL prefix를 붙입니다.
         return uploadUniqueFile(file, buildLessonFolder(lessonId), "sub");
@@ -82,12 +84,14 @@ public class R2ImageService {
      * 프로필 이미지 업로드
      * 최종 저장 경로: users/{userId}/profile.{확장자}
      */
+    @ExternalApiLog("R2 프로필 이미지 업로드")
     public String uploadProfileImage(MultipartFile file, Long userId) throws IOException {
         // 프로필 이미지는 저장 시 objectKey만 남기고, 응답 서비스에서 public URL prefix를 붙입니다.
         return uploadUniqueFile(file, buildUserFolder(userId), "profile");
     }
 
     // 기존 objectKey 위치의 파일 업데이트
+    @ExternalApiLog("R2 이미지 objectKey 기준 업데이트")
     public String updateByObjectKey(MultipartFile file, String objectKey) throws IOException {
         validate(file);
         putObject(file, objectKey);
@@ -95,12 +99,14 @@ public class R2ImageService {
     }
 
     // imageUrl에서 objectKey를 추출한 뒤 해당 위치의 파일 업데이트
+    @ExternalApiLog("R2 이미지 url 기준 업데이트")
     public String updateByUrl(MultipartFile file, String imageUrl) throws IOException {
         String objectKey = extractObjectKey(imageUrl);
         return updateByObjectKey(file, objectKey);
     }
 
     // imageUrl 기준으로 파일 삭제
+    @ExternalApiLog("R2 이미지 url 기준 삭제")
     public void deleteByUrl(String imageUrl) {
         String objectKey = extractObjectKey(imageUrl);
         deleteByObjectKey(objectKey);
@@ -114,7 +120,6 @@ public class R2ImageService {
                 .build();
 
         s3Client.deleteObject(request);
-        log.info("[R2] delete success. objectKey={}, traceId={}", objectKey, TraceIdUtil.getTraceId());
     }
 
     /**
@@ -127,22 +132,16 @@ public class R2ImageService {
         }
 
         if (imageUrlResolver.isExternalUrl(imageUrl)) {
-            log.warn("[R2] reject external image URL. imageUrl={}, traceId={}",
-                    imageUrl, TraceIdUtil.getTraceId());
             throw new CustomException(INVALID_IMAGE_URL);
         }
 
         String objectKey = imageUrlResolver.toObjectKey(imageUrl);
-        log.debug("[R2] extract objectKey. objectKey={}, traceId={}",
-                objectKey, TraceIdUtil.getTraceId());
         return objectKey;
     }
 
     // objectKey를 공개 URL로 변환
     public String buildPublicUrl(String objectKey) {
         String publicUrl = imageUrlResolver.toPublicUrl(objectKey);
-        log.debug("[R2] build public URL. objectKey={}, publicUrl={}, traceId={}",
-                objectKey, publicUrl, TraceIdUtil.getTraceId());
         return publicUrl;
     }
 
@@ -191,8 +190,6 @@ public class R2ImageService {
                 .build();
 
         s3Client.putObject(request, RequestBody.fromBytes(file.getBytes()));
-        log.info("[R2] put success. objectKey={}, size={}, traceId={}",
-                objectKey, file.getSize(), TraceIdUtil.getTraceId());
     }
 
     /**

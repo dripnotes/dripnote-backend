@@ -1,26 +1,36 @@
 package baristation.user.service;
 
+import baristation.bean.repository.ProductReviewRepository;
+import baristation.bookmark.repository.ProductBookmarkRepository;
 import baristation.common.exception.CustomException;
 import baristation.common.exception.ErrorCode;
 import baristation.common.logging.TraceIdUtil;
 import baristation.common.r2.R2ImageService;
 import baristation.common.redis.RedisService;
+import baristation.lesson.repository.BookingRepository;
+import baristation.lesson.repository.LessonRepository;
+import baristation.lesson.repository.LessonReviewRepository;
 import baristation.security.jwt.JwtTokenProvider;
 import baristation.security.payload.dto.TokenPair;
+import baristation.user.event.UserDeletedEvent;
+import baristation.user.enums.UserRole;
 import jakarta.servlet.http.HttpServletRequest;
 import baristation.user.domain.User;
 import baristation.user.payload.dto.UserUpdateRequest;
+import baristation.user.repository.CareerRepository;
 import baristation.user.repository.UserRepository;
 import baristation.user.validator.NicknameValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +38,18 @@ import java.time.Duration;
 @Slf4j
 public class UserService {
 
-    private final UserRepository userRepository; // repo
+    private final UserRepository userRepository;
+    private final CareerRepository careerRepository;
+    private final ProductBookmarkRepository productBookmarkRepository;
+    private final ProductReviewRepository productReviewRepository;
+    private final BookingRepository bookingRepository;
+    private final LessonReviewRepository lessonReviewRepository;
+    private final LessonRepository lessonRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
     private final R2ImageService r2ImageService;
     private final NicknameValidator nicknameValidator;
+    private final ApplicationEventPublisher eventPublisher;
 
     public void logout(HttpServletRequest request) {
         String accessToken = resolveToken(request);
@@ -70,6 +87,25 @@ public class UserService {
         return newTokenPair;
     }
 
+    /**
+     * 회원 탈퇴 처리
+     *
+     * 프로세스:
+     * 1. 회원 정보 조회 및 프로필 이미지 경로 추출 (R2 파일 삭제용)
+     * 2. 연관된 모든 자식 데이터 벌크 삭제 (N+1 쿼리 방지)
+     *    - BARISTA 사용자가 호스팅 중인 레슨이 있으면 탈퇴 거절
+     *    - Career: 경력 정보
+     *    - ProductBookmark: 찜한 상품
+     *    - ProductReview: 상품 리뷰
+     *    - Booking: 레슨 예약
+     *    - LessonReview: 레슨 리뷰
+     * 3. 회원 데이터 삭제
+     * 4. Redis에서 Refresh Token 삭제
+     * 5. 현재 Access Token 블랙리스트 처리
+     * 6. R2 파일 삭제 이벤트 발행 (DB 커밋 후 비동기로 처리)
+     *
+     * @param request HTTP 요청 (Authorization 헤더에서 토큰 추출)
+     */
     public void deleteUser(HttpServletRequest request) {
         String accessToken = resolveToken(request);
         Long userId = extractUserId(accessToken);
@@ -77,12 +113,41 @@ public class UserService {
 
         User user = userRepository.getUserByUserId(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (user.getRole() == UserRole.BARISTA && lessonRepository.existsByHostUser_UserId(userId)) {
+            throw new CustomException(ErrorCode.USER_WITHDRAWAL_DENIED_HAS_HOSTED_LESSON);
+        }
+
+        // 1. 회원의 R2 파일 경로 조회 (삭제 전에 반드시 조회)
+        List<String> fileKeysToDelete = userRepository.findProfileImageKeysByUserId(userId);
+
+        // 2. 자식 데이터 벌크 삭제 (외래키 참조 순서 주의: 자식 -> 부모)
+        careerRepository.deleteAllByUserIdInQuery(userId);
+        productBookmarkRepository.deleteAllByUserIdInQuery(userId);
+        
+        // 상품 리뷰와 레슨 리뷰는 user_id를 0으로 덮어씌우기 (데이터 보존)
+        productReviewRepository.updateUserIdToDeletedByUserIdInQuery(userId);
+        lessonReviewRepository.updateUserIdToDeletedByUserIdInQuery(userId);
+
+        // 결제의 경우 -> 회원탈퇴시 로그에 기록 - 추후 구현
+//        bookingRepository.deleteAllByUserIdInQuery(userId);
+
+        // 3. 회원(부모) 데이터 삭제
         userRepository.delete(user);
+
+        // 4. Redis에서 Refresh Token 삭제
         redisService.deleteRefreshToken(userIdText);
 
+        // 5. 현재 Access Token 블랙리스트 처리
         long expiration = jwtTokenProvider.getExpirationToken(accessToken);
         redisService.setBlackList(accessToken, "delete", Duration.ofMillis(expiration));
 
+        // 6. R2 파일 삭제 이벤트 발행
+        // (DB 트랜잭션 커밋 후 AFTER_COMMIT 리스너가 비동기로 처리)
+        eventPublisher.publishEvent(new UserDeletedEvent(userId, fileKeysToDelete, TraceIdUtil.getTraceId()));
+
+        log.info("[Auth] User withdrawal completed. userId={}, fileCount={}, traceId={}",
+                userId, fileKeysToDelete.size(), TraceIdUtil.getTraceId());
     }
 
     /**
@@ -114,6 +179,12 @@ public class UserService {
         user.updateNickname(newNickname);
 
         if (profileImage != null && !profileImage.isEmpty()) {
+            // 1. 형식 검증
+            String contentType = profileImage.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                throw new CustomException(ErrorCode.UNSUPPORTED_IMAGE_TYPE);
+            }
+
             try {
                 String oldImageUrl = user.getProfileImageUrl();
                 String newImageUrl;

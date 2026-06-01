@@ -10,7 +10,6 @@ import baristation.bean.repository.ProductFlavorNoteRepository;
 import baristation.bean.repository.ProductImageRepository;
 import baristation.bookmark.repository.ProductBookmarkRepository;
 import baristation.bean.repository.ProductRepository;
-import baristation.common.logging.TraceIdUtil;
 import baristation.common.exception.CustomException;
 import baristation.common.exception.ErrorCode;
 import baristation.common.payload.response.PageResponse;

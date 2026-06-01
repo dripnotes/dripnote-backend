@@ -189,7 +189,7 @@ public class BeanServiceImpl implements BeanService {
                     .flavorImageUrl(imageUrlResolver.toPublicUrl(flavorNote.flavorImageUrl()))
                     .build();
         }
-        
+
         return ProductSummaryDTO.builder()
                 .productId(productId)
                 .beanNameKo(bean.getNameKo())

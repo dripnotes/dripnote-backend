@@ -1,7 +1,5 @@
 package baristation.lesson.controller;
 
-import baristation.bean.payload.dto.ProductDetailDTO;
-import baristation.common.logging.TraceIdUtil;
 import baristation.common.payload.response.ApiResponse;
 import baristation.common.payload.response.PageResponse;
 import baristation.lesson.payload.dto.LessonDTO;
@@ -9,7 +7,6 @@ import baristation.lesson.payload.dto.LessonDetailDTO;
 import baristation.lesson.payload.request.LessonSearchRequest;
 import baristation.lesson.service.LessonService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/api/lessons")
 public class LessonController {
     private final LessonService lessonService;
@@ -30,11 +26,7 @@ public class LessonController {
             @ModelAttribute LessonSearchRequest request,
             @PageableDefault(size = 12) Pageable pageable
     ) {
-        log.info("[Lesson] searchLessons start. page={}, size={}, keyword={}, category={}, region={}, difficulty={}, traceId={}",
-                pageable.getPageNumber(), pageable.getPageSize(), request.keyword(), request.category(), request.region(), request.difficulty(), TraceIdUtil.getTraceId());
         PageResponse<LessonDTO> response = lessonService.searchLessons(request, pageable);
-        log.info("[Lesson] searchLessons done. contentSize={}, totalElements={}, traceId={}",
-                response.content().size(), response.totalElements(), TraceIdUtil.getTraceId());
         return ApiResponse.ok(response);
     }
 
@@ -43,10 +35,7 @@ public class LessonController {
      */
     @GetMapping("/{lessonId}")
     public ResponseEntity<ApiResponse<LessonDetailDTO>> getLessonDetail(@PathVariable Long lessonId) {
-        log.info("[Lesson] getLessonDetail start. lessonId={}, traceId={}", lessonId, TraceIdUtil.getTraceId());
         LessonDetailDTO response = lessonService.getLessonDetail(lessonId);
-        log.info("[Lesson] getLessonDetail done. lessonId={}, hasDetail={}, traceId={}",
-                lessonId, response != null, TraceIdUtil.getTraceId());
         return ApiResponse.ok(response);
     }
 }

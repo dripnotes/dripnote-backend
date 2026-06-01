@@ -36,6 +36,8 @@ public enum ErrorCode {
     USER_NICKNAME_RESERVED(HttpStatus.BAD_REQUEST, "700-9", "사용할 수 없는 예약어입니다."),
     USER_NICKNAME_DUPLICATE(HttpStatus.CONFLICT, "700-10", "이미 사용 중인 닉네임입니다."),
     USER_NICKNAME_INVALID_SPECIAL_CHAR(HttpStatus.BAD_REQUEST, "700-11", "특수문자가 연속되거나 시작/끝에 위치할 수 없습니다."),
+    USER_WITHDRAWAL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "700-12", "회원 탈퇴 처리 중 오류가 발생했습니다."), // 회원 탈퇴 중 예상 밖의 서버 오류
+    USER_WITHDRAWAL_DENIED_HAS_HOSTED_LESSON(HttpStatus.CONFLICT, "700-13", "진행 중인 레슨이 있어 회원 탈퇴를 진행할 수 없습니다."),
 
     // 701xx: 토큰 관련 오류
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "701-1", "유효하지 않은 토큰입니다."),
